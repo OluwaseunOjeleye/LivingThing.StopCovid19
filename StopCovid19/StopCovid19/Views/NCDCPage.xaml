@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="StopCovid19.Views.NCDCPage"
+             Title="NCDC Report">
+    <ContentPage.Content>
+        <RefreshView IsRefreshing="{Binding Loading}" Command="{Binding Reload}">
+            <ScrollView>
+                <StackLayout Padding="5">
+                    <Frame CornerRadius="10" BackgroundColor="LightYellow">
+                        <StackLayout>
+                            <Label Text="DISCLAIMER NOTICE" FontAttributes="Bold" FontSize="Subtitle"/>
+                            <Label Text="The information on this page is obtained by crawling NCDC page at https://covid19.ncdc.gov.ng." FontSize="Default"/>
+                            <Label Text="We hereby disclaim responsibilities and liabilities towards the correctness and consequence of usage of such information as is provided on this page" FontSize="Default"/>
+                        </StackLayout>
+                    </Frame>
+                    <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" TextColor="Red" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                    <Frame BackgroundColor="#D0000000" CornerRadius="10" HasShadow="True" IsVisible="{Binding Loaded}">
+                        <StackLayout>
+                            <Label Text="COVID-19 CASE UPDATE" FontSize="Title" TextColor="White" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <!--<Label Text="4 New Cases Confirmed" FontSize="Title" TextColor="#FCAC00" HorizontalTextAlignment="Center" FontAttributes="Bold"/>-->
+                            <!--<Label Text="11:00pm 23rd March 2020" TextColor="White" HorizontalTextAlignment="Center" FontAttributes="Bold"/>-->
+                            <StackLayout BindableLayout.ItemsSource="{Binding Summary}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="0.6*"/>
+                                                    <ColumnDefinition Width="0.4*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition/>
+                                                </Grid.RowDefinitions>
+                                                <StackLayout Grid.Column="0" BackgroundColor="{Binding LabelBackgroundColor}">
+                                                    <Label Text="{Binding Label}" TextColor="{Binding LabelTextColor}" Padding="10" FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="FillAndExpand"/>
+                                                </StackLayout>
+                                                <StackLayout Grid.Column="1" BackgroundColor="{Binding CountBackgroundColor}">
+                                                    <Label Text="{Binding CountString}" HorizontalOptions="EndAndExpand" TextColor="{Binding CountTextColor}" Padding="10" FontSize="Subtitle" FontAttributes="Bold"/>
+                                                </StackLayout>
+                                            </Grid>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
+                        </StackLayout>
+                    </Frame>
+                    <Frame BackgroundColor="#D0000000" CornerRadius="10" HasShadow="True" IsVisible="{Binding Loaded}">
+                        <StackLayout>
+                            <Label Text="By State" FontSize="Title" TextColor="White" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                            <StackLayout Orientation="Horizontal" BackgroundColor="#C0000000" Padding="5">
+                                <Label Text="State" TextColor="#FCAC00" FontSize="Subtitle" FontAttributes="Bold"/>
+                                <Label Text="Count" TextColor="White" FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                            <BoxView HeightRequest="1" BackgroundColor="LightGray"/>
+                            <StackLayout BindableLayout.ItemsSource="{Binding States}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding Name}" TextColor="#FCAC00" FontSize="Subtitle"/>
+                                                <Label Text="{Binding Count}" TextColor="Red" FontSize="Subtitle" HorizontalOptions="EndAndExpand"/>
+                                            </StackLayout>
+                                            <BoxView HeightRequest="1" BackgroundColor="LightGray"/>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+            </ScrollView>
+        </RefreshView>
+    </ContentPage.Content>
+</ContentPage>

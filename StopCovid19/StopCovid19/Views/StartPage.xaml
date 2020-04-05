@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="StopCovid19.Views.StartPage">
+    <ContentPage.BackgroundImageSource>
+        <FileImageSource File="bg.png">
+        </FileImageSource>
+    </ContentPage.BackgroundImageSource>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="10" BackgroundColor="#F0FFFFFF" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <StackLayout VerticalOptions="CenterAndExpand">
+                    <Label FontSize="Body" Text="This application is a free and collective initiative meant to combat the spread of coronavirus."></Label>
+                    <Label FontSize="Body" Text="We attempt to achieve this by:"></Label>
+                    <Label FontSize="Body" FontAttributes="Italic,Bold" Text="1. Contact Logging: Collecting location information from your mobile and sending it to a central server."></Label>
+                    <Label FontSize="Body" FontAttributes="Italic,Bold" Text="2. Contact Tracing: Processing such data when neccessary to cross match your location viz time against a positive diagnosed individual."></Label>
+                    <Label FontSize="Body" FontAttributes="Italic,Bold" Text="3. Information: Providing you updated and realtime information/news about Covid-19."></Label>
+                    <Label Text="Let's stop Covid-19, please supply a valid email address." FontSize="Subtitle" HorizontalTextAlignment="Center"/>
+                    <Frame HasShadow="true" Margin="0,50,0,0">
+                        <RefreshView IsRefreshing="{Binding IsLoading}">
+                            <StackLayout>
+                                <StackLayout IsVisible="{Binding IsCollectingEmail}">
+                                    <Label Text="Let's have your email"/>
+                                    <Entry Placeholder="Email" Margin="0,10" Text="{Binding EmailAddress}" Keyboard="Email"/>
+                                </StackLayout>
+                                <StackLayout IsVisible="{Binding IsCollectingToken}">
+                                    <Label Text="Please provide the token sent to your email"/>
+                                    <Entry Placeholder="Token" Margin="0,10" Text="{Binding Token}" Keyboard="Numeric"/>
+                                </StackLayout>
+                                <!--<Entry Placeholder="Password" Margin="0,10"/>-->
+                                <Label Text="{Binding ErrorMessage}" FontSize="Subtitle" TextColor="Red" IsVisible="{Binding HasValidationError}"/>
+                                <Button Text="Continue" BackgroundColor="{StaticResource AccentColor}" Command="{Binding Continue}"/>
+                                <Button Text="Skip" BackgroundColor="{StaticResource AccentColor}" Command="{Binding Done}"/>
+                            </StackLayout>
+                        </RefreshView>
+                    </Frame>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

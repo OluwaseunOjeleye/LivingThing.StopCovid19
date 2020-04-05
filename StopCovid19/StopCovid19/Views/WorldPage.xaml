@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="StopCovid19.Views.WorldPage"
+             xmlns:sfchart="clr-namespace:Syncfusion.SfChart.XForms;assembly=Syncfusion.SfChart.XForms"
+             Title="World Covid-19"
+             x:Name="me">
+    <ContentPage.Content>
+        <RefreshView IsRefreshing="{Binding Loading}" Command="{Binding Reload}">
+            <ScrollView>
+                <StackLayout IsVisible="{Binding Loaded}">
+                    <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" TextColor="Red" HorizontalTextAlignment="Center" FontAttributes="Bold"/>
+                    <StackLayout Padding="10">
+                    <StackLayout BindableLayout.ItemsSource="{Binding Summary}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.6*"/>
+                                            <ColumnDefinition Width="0.4*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <StackLayout Grid.Column="0">
+                                                <Label Text="{Binding Label}" TextColor="#C0000000" FontSize="Subtitle" FontAttributes="Bold" HorizontalOptions="FillAndExpand"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="1">
+                                                <Label Text="{Binding CountString}" TextColor="{Binding CountTextColor}"  HorizontalOptions="EndAndExpand" FontSize="Subtitle" FontAttributes="Bold"/>
+                                        </StackLayout>
+                                    </Grid>
+                                        <BoxView HeightRequest="1" BackgroundColor="LightGray"/>
+                                    </StackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </StackLayout>
+                
+                <ScrollView Orientation="Horizontal">
+                    <sfchart:SfChart HeightRequest="320" WidthRequest="{Binding ChartWidth}">
+
+                        <sfchart:SfChart.PrimaryAxis>
+                            <sfchart:CategoryAxis ShowMajorGridLines="True">
+                                <sfchart:CategoryAxis.Title>
+                                    <sfchart:ChartAxisTitle Text="Date"></sfchart:ChartAxisTitle>
+                                </sfchart:CategoryAxis.Title>
+                                </sfchart:CategoryAxis>
+                        </sfchart:SfChart.PrimaryAxis>
+
+                        <sfchart:SfChart.SecondaryAxis>
+                            <sfchart:NumericalAxis ShowMajorGridLines="True" ShowMinorGridLines="True">
+                                <sfchart:NumericalAxis.Title>
+                                    <sfchart:ChartAxisTitle Text="Count"></sfchart:ChartAxisTitle>
+                                </sfchart:NumericalAxis.Title>
+                                <!--<sfchart:NumericalAxis.MajorGridLineStyle>
+                                    <sfchart:ChartLineStyle StrokeWidth="1" StrokeColor="Red"></sfchart:ChartLineStyle>
+                                </sfchart:NumericalAxis.MajorGridLineStyle>
+                                <sfchart:NumericalAxis.MinorGridLineStyle>
+                                    <sfchart:ChartLineStyle StrokeWidth="1" StrokeColor="Red"></sfchart:ChartLineStyle>
+                                </sfchart:NumericalAxis.MinorGridLineStyle>-->
+                            </sfchart:NumericalAxis>
+                        </sfchart:SfChart.SecondaryAxis>
+
+                        <sfchart:SfChart.Series>
+                            <sfchart:ColumnSeries Label="Confirmed" ItemsSource="{Binding Combined}" XBindingPath="FormatDate" YBindingPath="Confirmed" EnableTooltip="True" Color="#FCAC00">
+                            </sfchart:ColumnSeries>
+                            <sfchart:ColumnSeries Label="Recovered" ItemsSource="{Binding Combined}" XBindingPath="FormatDate" YBindingPath="Recovered" EnableTooltip="True" Color="#00AEEF">
+                            </sfchart:ColumnSeries>
+                            <sfchart:ColumnSeries Label="Deaths" ItemsSource="{Binding Combined}" XBindingPath="FormatDate" YBindingPath="Deaths" EnableTooltip="True" Color="Red">
+                            </sfchart:ColumnSeries>
+                        </sfchart:SfChart.Series>
+
+                        <sfchart:SfChart.Legend>
+                            <sfchart:ChartLegend/>
+                        </sfchart:SfChart.Legend>
+
+                    </sfchart:SfChart>
+                </ScrollView>
+                <StackLayout BackgroundColor="#C0000000" Padding="5">
+                        <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.3*"/>
+                            <ColumnDefinition Width="0.25*"/>
+                            <ColumnDefinition Width="0.25*"/>
+                            <ColumnDefinition Width="0.2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="Country" TextColor="White" FontSize="Subtitle"/>
+                        <Label Grid.Column="1" Text="Confirmed" TextColor="White" FontSize="Subtitle" HorizontalOptions="EndAndExpand"/>
+                        <Label Grid.Column="2" Text="Recovered" TextColor="White" FontSize="Subtitle" HorizontalOptions="EndAndExpand"/>
+                        <Label Grid.Column="3" Text="Deaths" TextColor="White" FontSize="Subtitle" HorizontalOptions="EndAndExpand"/>
+                    </Grid>
+                </StackLayout>
+                <StackLayout>
+                        <!--<syncfusion:SfDataGrid x:Name="dataGrid"
+                               ItemsSource="{Binding Model}" ColumnSizer="Star" AutoGenerateColumns="False">
+                            <syncfusion:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
+                                <syncfusion:GridTextColumn HeaderText="Country" 
+                                   MappingName="Key" />
+                                <syncfusion:GridTextColumn HeaderText="Confirmed" MappingName="Value.Current.Confirmed"/>
+                                <syncfusion:GridTextColumn HeaderText="Recovered"
+                                   MappingName="Value.Current.Recovered" />
+                                <syncfusion:GridTextColumn HeaderText="Deaths"
+                                   MappingName="Value.Current.Deaths" />
+                            </syncfusion:SfDataGrid.Columns>
+                        </syncfusion:SfDataGrid>-->
+                        <StackLayout>
+                            <ListView ItemsSource="{Binding Countries}" HasUnevenRows="True" ItemTapped="ListView_ItemTapped">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Padding="6,4">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="0.3*"/>
+                                                        <ColumnDefinition Width="0.25*"/>
+                                                        <ColumnDefinition Width="0.25*"/>
+                                                        <ColumnDefinition Width="0.2*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Grid.Column="0" Text="{Binding Country}" TextColor="Black" FontSize="Subtitle"/>
+                                                    <Label Grid.Column="1" Text="{Binding Current.Confirmed}" TextColor="DarkOrange" FontSize="Subtitle" HorizontalOptions="EndAndExpand"/>
+                                                    <Label Grid.Column="2" Text="{Binding Current.Recovered}" TextColor="#00AEEF" FontSize="Subtitle" HorizontalOptions="EndAndExpand"/>
+                                                    <Label Grid.Column="3" Text="{Binding Current.Deaths}" TextColor="Red" FontSize="Subtitle" HorizontalOptions="EndAndExpand"/>
+                                                </Grid>
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                            <!--<StackLayout BindableLayout.ItemsSource="{Binding Model}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout Padding="5,0">
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Value.Details}"/>
+                                            </StackLayout.GestureRecognizers>
+                                            <StackLayout>
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="0.3*"/>
+                                                        <ColumnDefinition Width="0.25*"/>
+                                                        <ColumnDefinition Width="0.25*"/>
+                                                        <ColumnDefinition Width="0.2*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Grid.Column="0" Text="{Binding Key}" TextColor="Black" FontSize="Subtitle"/>
+                                                    <Label Grid.Column="1" Text="{Binding Value.Current.Confirmed}" TextColor="DarkOrange" FontSize="Subtitle" HorizontalOptions="EndAndExpand"/>
+                                                    <Label Grid.Column="2" Text="{Binding Value.Current.Recovered}" TextColor="#00AEEF" FontSize="Subtitle" HorizontalOptions="EndAndExpand"/>
+                                                    <Label Grid.Column="3" Text="{Binding Value.Current.Deaths}" TextColor="Red" FontSize="Subtitle" HorizontalOptions="EndAndExpand"/>
+                                                </Grid>
+                                            </StackLayout>
+                                            <BoxView HeightRequest="1" BackgroundColor="LightGray"/>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>-->
+                        </StackLayout>
+                </StackLayout>
+            </StackLayout>
+            </ScrollView>
+        </RefreshView>
+    </ContentPage.Content>
+</ContentPage>
